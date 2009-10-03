@@ -9,13 +9,16 @@
 	<url>http://gapps.pl</url>
 	<properties>
 		<gwt.version>1.7.0</gwt.version>
+		<gxt.version>2.0.1</gxt.version>
+		<junit.version>4.5</junit.version>
+		<compiler.version>1.6</compiler.version>
 	</properties>
 	<dependencies>
 		<!-- GWT/GXT :START -->
 		<dependency>
 			<groupId>com.extjs</groupId>
 			<artifactId>gxt</artifactId>
-			<version>2.0.1</version>
+			<version>${gxt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -35,7 +38,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.5</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -68,8 +71,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${compiler.version}</source>
+					<target>${compiler.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
