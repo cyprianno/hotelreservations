@@ -5,6 +5,17 @@
 
 <web-app>
  
+   <!-- Servlets -->
+  <servlet>
+    <servlet-name>rmservice</servlet-name>
+    <servlet-class>pl.gapps.hotel.gxt.server.RejestrMieszkancowServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>rmservice</servlet-name>
+    <url-pattern>/hotel/rmservice</url-pattern>
+  </servlet-mapping>
+ 
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Hotel.html</welcome-file>
