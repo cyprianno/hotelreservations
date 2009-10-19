@@ -13,7 +13,7 @@ import pl.gapps.hotel.domain.dao.helper.PMF;
 
 /**
  * @author cyprian
- * DAO generyczne po którym dziedzicz¹ wszystkie inne DAO; zawiera podstawowe operacje.
+ * DAO generyczne po którym dziedzicz¹ wszystkie inne DAO; zawiera podstawowe operacje na bazie danych.
  */
 public abstract class GenericDAO <E extends Serializable> {
 	

@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
+ * TODO: poni¿szy test automatycznie wygenerowany, nic nie robi.
  */
 public class AppTest 
     extends TestCase
