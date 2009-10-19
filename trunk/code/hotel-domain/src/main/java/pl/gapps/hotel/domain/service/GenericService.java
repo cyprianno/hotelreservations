@@ -10,7 +10,7 @@ import pl.gapps.hotel.domain.dao.GenericDAO;
 
 /**
  * @author cyprian
- *
+ * Generyczny serwis zawieraj¹cy podstawowe metody obs³ugi tabel. 
  */
 public abstract class GenericService<E extends Serializable, D extends GenericDAO<E>> {
 

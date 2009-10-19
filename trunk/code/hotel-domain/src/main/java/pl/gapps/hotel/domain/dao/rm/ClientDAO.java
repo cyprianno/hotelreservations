@@ -8,7 +8,7 @@ import pl.gapps.hotel.domain.model.rm.Client;
 
 /**
  * @author cyprian
- *
+ * DAO obs³uguj¹ce tabelê klientów
  */
 public class ClientDAO extends GenericDAO<Client>{
 

@@ -13,7 +13,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author cyprian
- *
+ * Tabela klientów hoteli
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Client implements Serializable{
