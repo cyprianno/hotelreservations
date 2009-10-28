@@ -4,14 +4,13 @@
 package pl.gapps.hotel.gxt.server;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-import pl.gapps.hotel.domain.model.rp.Floor;
 import pl.gapps.hotel.domain.model.rp.Hotel;
-import pl.gapps.hotel.domain.model.rp.Room;
+import pl.gapps.hotel.domain.service.rp.HotelService;
 import pl.gapps.hotel.gxt.client.model.HotelModelData;
 import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowService;
+import pl.gapps.hotel.gxt.utils.ClassProperties;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
@@ -28,27 +27,12 @@ public class RejestrMieszkancowServiceImpl extends RemoteServiceServlet implemen
 
 	@Override
 	public List<HotelModelData> getHotels() {
-//		HotelService hs = new HotelService();
-//		List<Hotel> hotels = hs.findAll();
-		List<Hotel> hotels = new ArrayList<Hotel>();
-		Hotel h = new Hotel();
-		h.setAddress("adres");
-		h.setFloors(new HashSet<Floor>());
-		h.setRooms(new HashSet<Room>());
-		h.setHotelId(1);
-		h.setName("name");
-		hotels.add(h);
-		//
+		HotelService hs = new HotelService();
+		List<Hotel> hotels = hs.findAll();
+
 		List<HotelModelData> returnList = new ArrayList<HotelModelData>();
-		for (Hotel hotel : hotels) {
-			HotelModelData hmd = new HotelModelData();
-			hmd.set("address", hotel.getAddress());
-			hmd.set("floorCount", hotel.getFloors().size());
-			hmd.set("hotelId", hotel.getHotelId());
-			hmd.set("name", hotel.getName());
-			hmd.set("roomCount", hotel.getRooms().size());
-			returnList.add(hmd);
-		}
+		ClassProperties<Hotel, HotelModelData> cp = new ClassProperties<Hotel, HotelModelData>();
+		cp.copyList(hotels, returnList, Hotel.class, HotelModelData.class);
 		return returnList;
 	}
 	
