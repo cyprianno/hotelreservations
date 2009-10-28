@@ -22,7 +22,7 @@ public class Client implements Serializable{
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Integer clientId;
+    private Long clientId;
 	
 	@Persistent
 	private String firstName;
@@ -37,11 +37,11 @@ public class Client implements Serializable{
 	private String legitimationNumber;
 
     /* metody dostêpowe */
-	public Integer getClientId() {
+	public Long getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(Integer clientId) {
+	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 	}
 

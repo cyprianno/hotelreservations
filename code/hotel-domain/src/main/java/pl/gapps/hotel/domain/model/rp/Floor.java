@@ -13,6 +13,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+
 /**
  * @author cyprian
  *
@@ -24,7 +26,7 @@ public class Floor implements Serializable {
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Integer floorId;
+	private Key floorId;
 	
     @Persistent
 	private String floorNr;
@@ -36,11 +38,11 @@ public class Floor implements Serializable {
 	private Hotel hotel;
 
     /* metody dostêpowe */
-	public Integer getFloorId() {
+	public Key getFloorId() {
 		return floorId;
 	}
 
-	public void setFloorId(Integer floorId) {
+	public void setFloorId(Key floorId) {
 		this.floorId = floorId;
 	}
 

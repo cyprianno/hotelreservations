@@ -8,6 +8,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+
 /**
  * @author cyprian
  *
@@ -19,7 +21,7 @@ public class Room implements Serializable {
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Integer roomId;
+	private Key roomId;
 
 	//TODO: Embeded room nr.
 //    @Persistent
@@ -35,11 +37,11 @@ public class Room implements Serializable {
 	private Floor floor;
 
 	/* metody dostêpowe */
-	public Integer getRoomId() {
+	public Key getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(Integer roomId) {
+	public void setRoomId(Key roomId) {
 		this.roomId = roomId;
 	}
 
