@@ -24,7 +24,7 @@ public class Hotel implements Serializable{
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Integer hotelId;
+	private Long hotelId;
 	
     @Persistent
 	private String name;
@@ -39,11 +39,11 @@ public class Hotel implements Serializable{
 	private Set<Floor> floors = new HashSet<Floor>();
 
     /* metody dostêpowe */
-	public Integer getHotelId() {
+	public Long getHotelId() {
 		return hotelId;
 	}
 
-	public void setHotelId(Integer hotelId) {
+	public void setHotelId(Long hotelId) {
 		this.hotelId = hotelId;
 	}
 

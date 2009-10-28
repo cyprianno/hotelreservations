@@ -50,6 +50,9 @@ public abstract class GenericDAO <E extends Serializable> {
 		Query query = pm.newQuery(getEntityClass());
 		try {
 			returnData = (List<E>) query.execute();
+			for (E hotel : returnData) {
+				hotel.equals(null);	
+			}
 		} finally {
 			pm.close();
 		}
