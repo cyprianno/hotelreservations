@@ -13,6 +13,7 @@ import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowService;
 import pl.gapps.hotel.gxt.utils.ClassProperties;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -42,4 +43,13 @@ public class RejestrMieszkancowServiceImpl extends RemoteServiceServlet implemen
 		return new BasePagingLoadResult<HotelModelData>(hotels, loadConfig.getOffset(), hotels.size());
 	}
 
+	@Override
+	public Boolean storeHotel(HotelModelData model) {
+		HotelService hs = new HotelService();
+		Hotel entity = new Hotel();
+		entity.setAddress((String) model.get("address"));
+		entity.setHotelId((Long) model.get("hotelId"));
+		entity.setName((String) model.get("name"));
+		return hs.store(entity);
+	}
 }
