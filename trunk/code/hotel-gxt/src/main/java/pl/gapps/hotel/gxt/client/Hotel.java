@@ -3,6 +3,7 @@
  */
 package pl.gapps.hotel.gxt.client;
 
+import pl.gapps.hotel.gxt.client.view.NavigationBar;
 import pl.gapps.hotel.gxt.client.view.rp.HotelListContainer;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -16,6 +17,8 @@ public class Hotel implements EntryPoint{
 	public void onModuleLoad() {
 		HotelListContainer hlc = new HotelListContainer();
 		hlc.showPage();
+		NavigationBar navigationBar = new NavigationBar();
+		navigationBar.show();
 		
 	}
 

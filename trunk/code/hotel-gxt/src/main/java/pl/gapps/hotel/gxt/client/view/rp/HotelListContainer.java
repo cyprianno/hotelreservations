@@ -51,16 +51,13 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class HotelListContainer extends LayoutContainer {
 
-//	private final RejestrMieszkancowServiceAsync rmService = GWT
-//			.create(RejestrMieszkancowService.class);
-
 	public HotelListContainer() {
 	}
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setLayout(new FlowLayout(10));
+		setLayout(new FlowLayout());
 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -116,25 +113,6 @@ public class HotelListContainer extends LayoutContainer {
 		loader.load();
 
 		final ListStore<ModelData> store = new ListStore<ModelData>(loader);
-		// TODO store.add(TestData.getPlants());
-//		store.addListener(Store.Update, new Listener<BaseEvent>() {
-//
-//			@Override
-//			public void handleEvent(BaseEvent be) {
-//				final MessageBox box = MessageBox.prompt("save", "Zapisz");
-//                box.addCallback(new Listener<MessageBoxEvent>() 
-//                {  
-//                        public void handleEvent(MessageBoxEvent be) 
-//                        {  
-//                            if(! be.getButtonClicked().getItemId().equals(MessageBox.OK))
-//                                    return;
-//                            //DO STUFF
-//                        }
-//                });
-//                be.setCancelled(true);
-//				
-//			}
-//		});
 
 		ColumnModel cm = new ColumnModel(configs);
 
@@ -143,7 +121,7 @@ public class HotelListContainer extends LayoutContainer {
 		// TODO:
 		cp.setHeading("Edit Hotel's buildings");
 		cp.setFrame(true);
-		cp.setSize(600, 300);
+		cp.setHeight(300);
 		cp.setLayout(new FitLayout());
 
 		final RowEditor<HotelModelData> re = new RowEditor<HotelModelData>();
