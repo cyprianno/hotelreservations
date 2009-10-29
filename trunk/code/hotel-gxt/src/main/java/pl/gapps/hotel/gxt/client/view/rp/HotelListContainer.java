@@ -37,6 +37,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.RowEditor;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -125,6 +126,7 @@ public class HotelListContainer extends LayoutContainer {
 		cp.setLayout(new FitLayout());
 
 		final RowEditor<HotelModelData> re = new RowEditor<HotelModelData>();
+		re.setClicksToEdit(ClicksToEdit.TWO);
 		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(true);
