@@ -35,4 +35,9 @@ public abstract class GenericService<E extends Serializable, D extends GenericDA
 	public E findById(Serializable id) {
 		return dao.findById(id);
 	}
+	
+	public Boolean store(E entity) {
+		dao.store(entity);
+		return true;
+	}
 }
