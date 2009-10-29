@@ -22,4 +22,5 @@ public interface RejestrMieszkancowService extends RemoteService {
 	public List<HotelModelData> getHotels();
 	public PagingLoadResult<HotelModelData> getHotels(PagingLoadConfig loadConfig);
 	public Boolean storeHotel(HotelModelData model);
+	public Boolean storeHotels(List<HotelModelData> models);
 }
