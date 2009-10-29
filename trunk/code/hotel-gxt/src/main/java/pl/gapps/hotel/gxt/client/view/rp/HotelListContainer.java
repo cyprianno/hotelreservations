@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.gapps.hotel.gxt.client.model.HotelModelData;
-import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowService;
 import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowServiceAsync;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -41,8 +40,6 @@ import com.extjs.gxt.ui.client.widget.grid.RowEditor;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.extjs.gxt.ui.rebind.core.BeanModelGenerator;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -54,8 +51,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class HotelListContainer extends LayoutContainer {
 
-	private final RejestrMieszkancowServiceAsync rmService = GWT
-			.create(RejestrMieszkancowService.class);
+//	private final RejestrMieszkancowServiceAsync rmService = GWT
+//			.create(RejestrMieszkancowService.class);
 
 	public HotelListContainer() {
 	}
@@ -108,7 +105,7 @@ public class HotelListContainer extends LayoutContainer {
 			@Override
 			public void load(Object loadConfig,
 					AsyncCallback<PagingLoadResult<HotelModelData>> callback) {
-				rmService.getHotels((PagingLoadConfig) loadConfig, callback);
+				RejestrMieszkancowServiceAsync.Util.getInstance().getHotels((PagingLoadConfig) loadConfig, callback);
 			}
 		};
 
@@ -195,28 +192,28 @@ public class HotelListContainer extends LayoutContainer {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
+				List<HotelModelData> datas = new ArrayList<HotelModelData>();
 				for (Record hmd : store.getModifiedRecords()) {
-					rmService.storeHotel((HotelModelData) ((BeanModel) hmd.getModel()).getBean(), new AsyncCallback<Boolean>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							MessageBox mb = new MessageBox();
-							mb.setMessage("Message Error \n "+caught.getLocalizedMessage());
-							mb.show();						
-							throw new RuntimeException(caught);
-						}
-
-						@Override
-						public void onSuccess(Boolean result) {
-							MessageBox mb = new MessageBox();
-							mb.setMessage("Message");
-							mb.show();
-							store.commitChanges();
-						}
-					});
+					datas.add((HotelModelData) ((BeanModel) hmd.getModel()).getBean());
 				}
-				
-//				store.commitChanges();
+				RejestrMieszkancowServiceAsync.Util.getInstance().storeHotels(datas, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						MessageBox mb = new MessageBox();
+						mb.setMessage("Message Error \n "+caught.getLocalizedMessage());
+						mb.show();						
+						throw new RuntimeException(caught);
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						MessageBox mb = new MessageBox();
+						mb.setMessage("Message");
+						mb.show();
+						store.commitChanges();
+					}
+				});
 			}
 		}));
 
