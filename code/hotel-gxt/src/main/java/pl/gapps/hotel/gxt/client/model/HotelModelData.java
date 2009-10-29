@@ -17,11 +17,11 @@ public class HotelModelData extends BaseModelData implements Serializable, BeanM
 	private static final long serialVersionUID = 4015228790784747291L;
 	
     /* metody dostêpowe */
-	public Integer getHotelId() {
+	public Long getHotelId() {
 		return get("hotelId");
 	}
 
-	public void setHotelId(Integer hotelId) {
+	public void setHotelId(Long hotelId) {
 		set("hotelId",hotelId);
 	}
 

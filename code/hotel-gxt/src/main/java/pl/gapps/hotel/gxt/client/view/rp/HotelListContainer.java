@@ -12,6 +12,9 @@ import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowServiceAsync;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelFactory;
+import com.extjs.gxt.ui.client.data.BeanModelLookup;
 import com.extjs.gxt.ui.client.data.BeanModelReader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
@@ -20,9 +23,11 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
@@ -36,6 +41,7 @@ import com.extjs.gxt.ui.client.widget.grid.RowEditor;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.extjs.gxt.ui.rebind.core.BeanModelGenerator;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
@@ -112,8 +118,26 @@ public class HotelListContainer extends LayoutContainer {
 		loader.setRemoteSort(true);
 		loader.load();
 
-		final ListStore<HotelModelData> store = new ListStore<HotelModelData>(loader);
+		final ListStore<ModelData> store = new ListStore<ModelData>(loader);
 		// TODO store.add(TestData.getPlants());
+//		store.addListener(Store.Update, new Listener<BaseEvent>() {
+//
+//			@Override
+//			public void handleEvent(BaseEvent be) {
+//				final MessageBox box = MessageBox.prompt("save", "Zapisz");
+//                box.addCallback(new Listener<MessageBoxEvent>() 
+//                {  
+//                        public void handleEvent(MessageBoxEvent be) 
+//                        {  
+//                            if(! be.getButtonClicked().getItemId().equals(MessageBox.OK))
+//                                    return;
+//                            //DO STUFF
+//                        }
+//                });
+//                be.setCancelled(true);
+//				
+//			}
+//		});
 
 		ColumnModel cm = new ColumnModel(configs);
 
@@ -126,7 +150,7 @@ public class HotelListContainer extends LayoutContainer {
 		cp.setLayout(new FitLayout());
 
 		final RowEditor<HotelModelData> re = new RowEditor<HotelModelData>();
-		final Grid<HotelModelData> grid = new Grid<HotelModelData>(store, cm);
+		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(true);
 		grid.addPlugin(checkColumn);
@@ -139,14 +163,19 @@ public class HotelListContainer extends LayoutContainer {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
+	            
 				HotelModelData hotel = new HotelModelData();
+				BeanModelFactory factory = BeanModelLookup.get().getFactory(hotel.getClass());
+	            if (factory == null) {
+	              throw new RuntimeException("No BeanModelFactory found for " + hotel.getClass());
+	            }
 				hotel.set("name", "DS");
-				// TODO:
 				hotel.set("available", new DateWrapper().clearTime().asDate());
 
 				re.stopEditing(false);
-				store.insert(hotel, 0);
-				re.startEditing(store.indexOf(hotel), true);
+	            BeanModel model = factory.createModel(hotel);
+				store.insert(model, 0);
+				re.startEditing(store.indexOf(model), true);
 
 			}
 
@@ -166,7 +195,28 @@ public class HotelListContainer extends LayoutContainer {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				store.commitChanges();
+				for (Record hmd : store.getModifiedRecords()) {
+					rmService.storeHotel((HotelModelData) ((BeanModel) hmd.getModel()).getBean(), new AsyncCallback<Boolean>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							MessageBox mb = new MessageBox();
+							mb.setMessage("Message Error \n "+caught.getLocalizedMessage());
+							mb.show();						
+							throw new RuntimeException(caught);
+						}
+
+						@Override
+						public void onSuccess(Boolean result) {
+							MessageBox mb = new MessageBox();
+							mb.setMessage("Message");
+							mb.show();
+							store.commitChanges();
+						}
+					});
+				}
+				
+//				store.commitChanges();
 			}
 		}));
 
