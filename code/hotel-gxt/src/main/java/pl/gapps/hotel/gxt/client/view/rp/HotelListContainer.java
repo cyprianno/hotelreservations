@@ -8,6 +8,7 @@ import java.util.List;
 
 import pl.gapps.hotel.gxt.client.model.HotelModelData;
 import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowServiceAsync;
+import pl.gapps.hotel.gxt.client.view.icons.ResourceManager;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -27,15 +28,16 @@ import com.extjs.gxt.ui.client.util.DateWrapper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
-import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.RowEditor;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -51,6 +53,10 @@ import com.google.gwt.user.client.ui.RootPanel;
  * 
  */
 public class HotelListContainer extends LayoutContainer {
+
+	Text deleteCountText = new Text("Do usunięcia: ");
+	Text deleteCount = new Text("0");
+	String statusColumnName = "statusColumn";
 
 	public HotelListContainer() {
 	}
@@ -93,17 +99,35 @@ public class HotelListContainer extends LayoutContainer {
 		column.setDateTimeFormat(DateTimeFormat.getMediumDateFormat());
 		configs.add(column);
 
-		CheckColumnConfig checkColumn = new CheckColumnConfig("indoor",
-				"Indoor?", 55);
-		CellEditor checkBoxEditor = new CellEditor(new CheckBox());
-		checkColumn.setEditor(checkBoxEditor);
-		configs.add(checkColumn);
+		GridCellRenderer<ModelData> buttonRenderer = new GridCellRenderer<ModelData>() {
+			@Override
+			public Object render(ModelData model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<ModelData> store, Grid<ModelData> grid) {
+				Text output = new Text("ok");
+				if (model.get(property) == null) {
+					model.set(property, "0");
+				}
+				if (model.get(property).equals("1")) {
+					output.setText("usunięte");
+					output.setStyleAttribute("color", "red");
+				}
+				return output;
+			}
+		};
+		column = new ColumnConfig();
+		column.setId(statusColumnName);
+		column.setWidth(95);
+		column.setHeader("status");
+		column.setRenderer(buttonRenderer);
+		configs.add(column);
 
 		RpcProxy<PagingLoadResult<HotelModelData>> proxy = new RpcProxy<PagingLoadResult<HotelModelData>>() {
 			@Override
 			public void load(Object loadConfig,
 					AsyncCallback<PagingLoadResult<HotelModelData>> callback) {
-				RejestrMieszkancowServiceAsync.Util.getInstance().getHotels((PagingLoadConfig) loadConfig, callback);
+				RejestrMieszkancowServiceAsync.Util.getInstance().getHotels(
+						(PagingLoadConfig) loadConfig, callback);
 			}
 		};
 
@@ -130,7 +154,7 @@ public class HotelListContainer extends LayoutContainer {
 		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(true);
-		grid.addPlugin(checkColumn);
+//		grid.addPlugin(checkColumn);
 		grid.addPlugin(re);
 		cp.add(grid);
 
@@ -140,24 +164,42 @@ public class HotelListContainer extends LayoutContainer {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-	            
+
 				HotelModelData hotel = new HotelModelData();
-				BeanModelFactory factory = BeanModelLookup.get().getFactory(hotel.getClass());
-	            if (factory == null) {
-	              throw new RuntimeException("No BeanModelFactory found for " + hotel.getClass());
-	            }
+				BeanModelFactory factory = BeanModelLookup.get().getFactory(
+						hotel.getClass());
+				if (factory == null) {
+					throw new RuntimeException("No BeanModelFactory found for "
+							+ hotel.getClass());
+				}
 				hotel.set("name", "DS");
 				hotel.set("available", new DateWrapper().clearTime().asDate());
 
 				re.stopEditing(false);
-	            BeanModel model = factory.createModel(hotel);
+				BeanModel model = factory.createModel(hotel);
 				store.insert(model, 0);
 				re.startEditing(store.indexOf(model), true);
 
 			}
 
 		});
+		add.setIcon(ResourceManager.ICONS.add16());
 		toolBar.add(add);
+		Button removeHotel = new Button("RemoveHotel",new SelectionListener<ButtonEvent>() {
+
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				if (grid.getSelectionModel().getSelectedItem() != null) {
+					store.getRecord(grid.getSelectionModel().getSelectedItem()).set(statusColumnName, "1");
+				}
+				
+			}
+		});
+		toolBar.add(removeHotel);
+
+		deleteCount.setStyleAttribute("color", "black");
+		toolBar.add(deleteCountText);
+		toolBar.add(deleteCount);
 		cp.setTopComponent(toolBar);
 		cp.setButtonAlign(HorizontalAlignment.CENTER);
 		cp.addButton(new Button("Reset", new SelectionListener<ButtonEvent>() {
@@ -173,27 +215,31 @@ public class HotelListContainer extends LayoutContainer {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				List<HotelModelData> datas = new ArrayList<HotelModelData>();
-				for (Record hmd : store.getModifiedRecords()) {
-					datas.add((HotelModelData) ((BeanModel) hmd.getModel()).getBean());
+				for (Record record : store.getModifiedRecords()) {
+					datas.add((HotelModelData) ((BeanModel) record.getModel())
+							.getBean());
 				}
-				RejestrMieszkancowServiceAsync.Util.getInstance().storeHotels(datas, new AsyncCallback<Boolean>() {
+				RejestrMieszkancowServiceAsync.Util.getInstance().storeHotels(
+						datas, new AsyncCallback<Boolean>() {
 
-					@Override
-					public void onFailure(Throwable caught) {
-						MessageBox mb = new MessageBox();
-						mb.setMessage("Message Error \n "+caught.getLocalizedMessage());
-						mb.show();						
-						throw new RuntimeException(caught);
-					}
+							@Override
+							public void onFailure(Throwable caught) {
+								MessageBox mb = new MessageBox();
+								mb.setMessage("Error \n "
+										+ caught.getLocalizedMessage());
+								mb.show();
+								throw new RuntimeException(caught);
+							}
 
-					@Override
-					public void onSuccess(Boolean result) {
-						MessageBox mb = new MessageBox();
-						mb.setMessage("Message");
-						mb.show();
-						store.commitChanges();
-					}
-				});
+							@Override
+							public void onSuccess(Boolean result) {
+								MessageBox mb = new MessageBox();
+								mb.setMessage("Saved");
+								mb.show();
+								store.commitChanges();
+								loader.load();
+							}
+						});
 			}
 		}));
 
