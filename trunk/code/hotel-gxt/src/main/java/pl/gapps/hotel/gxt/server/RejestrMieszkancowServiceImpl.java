@@ -53,9 +53,23 @@ public class RejestrMieszkancowServiceImpl extends RemoteServiceServlet implemen
 
 	@Override
 	public Boolean storeHotels(List<HotelModelData> models) {
-		// TODO save in one transaction
 		for (HotelModelData hotelModelData : models) {
 			storeHotel(hotelModelData);
+		}
+		return true;
+	}
+	
+	@Override
+	public Boolean removeHotel(HotelModelData model) {
+		HotelService hs = new HotelService();
+		hs.remove(model.getHotelId());
+		return null;
+	}
+	
+	@Override
+	public Boolean removeHotels(List<HotelModelData> models) {
+		for (HotelModelData hotelModelData : models) {
+			removeHotel(hotelModelData);
 		}
 		return true;
 	}

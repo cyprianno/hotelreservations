@@ -6,9 +6,10 @@ package pl.gapps.hotel.gxt.client.view.rp;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.gapps.hotel.gxt.client.enums.RowStatusEnum;
+import pl.gapps.hotel.gxt.client.icons.ResourceManager;
 import pl.gapps.hotel.gxt.client.model.HotelModelData;
 import pl.gapps.hotel.gxt.client.service.RejestrMieszkancowServiceAsync;
-import pl.gapps.hotel.gxt.client.view.icons.ResourceManager;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -104,14 +105,13 @@ public class HotelListContainer extends LayoutContainer {
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<ModelData> store, Grid<ModelData> grid) {
-				Text output = new Text("ok");
+				Text output = new Text();
 				if (model.get(property) == null) {
-					model.set(property, "0");
+					model.set(property, RowStatusEnum.OK);
 				}
-				if (model.get(property).equals("1")) {
-					output.setText("usunięte");
-					output.setStyleAttribute("color", "red");
-				}
+				RowStatusEnum value = model.get(property);
+				output.setText(value.getLabel());
+				output.setStyleAttribute("color", value.getColor());
 				return output;
 			}
 		};
@@ -142,8 +142,6 @@ public class HotelListContainer extends LayoutContainer {
 		ColumnModel cm = new ColumnModel(configs);
 
 		ContentPanel cp = new ContentPanel();
-		// cp.setIcon(Examples.ICONS.table());
-		// TODO:
 		cp.setHeading("Edit Hotel's buildings");
 		cp.setFrame(true);
 		cp.setHeight(300);
@@ -154,7 +152,6 @@ public class HotelListContainer extends LayoutContainer {
 		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(true);
-//		grid.addPlugin(checkColumn);
 		grid.addPlugin(re);
 		cp.add(grid);
 
@@ -190,9 +187,8 @@ public class HotelListContainer extends LayoutContainer {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				if (grid.getSelectionModel().getSelectedItem() != null) {
-					store.getRecord(grid.getSelectionModel().getSelectedItem()).set(statusColumnName, "1");
+					store.getRecord(grid.getSelectionModel().getSelectedItem()).set(statusColumnName, RowStatusEnum.REMOVED);
 				}
-				
 			}
 		});
 		toolBar.add(removeHotel);
@@ -215,10 +211,36 @@ public class HotelListContainer extends LayoutContainer {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				List<HotelModelData> datas = new ArrayList<HotelModelData>();
+				List<HotelModelData> removeRows = new ArrayList<HotelModelData>();
 				for (Record record : store.getModifiedRecords()) {
-					datas.add((HotelModelData) ((BeanModel) record.getModel())
-							.getBean());
+					HotelModelData modelData =(HotelModelData) ((BeanModel) record.getModel())
+					.getBean(); 
+					if (record.get(statusColumnName).equals(RowStatusEnum.REMOVED)) {
+						removeRows.add(modelData);
+					} else {
+						datas.add(modelData);
+					}
 				}
+				RejestrMieszkancowServiceAsync.Util.getInstance().removeHotels(removeRows, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						MessageBox mb = new MessageBox();
+						mb.setMessage("Error \n "
+								+ caught.getLocalizedMessage());
+						mb.show();
+						throw new RuntimeException(caught);
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						MessageBox mb = new MessageBox();
+						mb.setMessage("Deleted");
+						mb.show();
+						store.commitChanges();
+//						loader.load();
+					}
+				});
 				RejestrMieszkancowServiceAsync.Util.getInstance().storeHotels(
 						datas, new AsyncCallback<Boolean>() {
 

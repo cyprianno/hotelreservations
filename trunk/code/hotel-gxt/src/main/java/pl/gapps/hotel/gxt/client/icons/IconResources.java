@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.gapps.hotel.gxt.client.view.icons;
+package pl.gapps.hotel.gxt.client.icons;
 
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ImageBundle;
