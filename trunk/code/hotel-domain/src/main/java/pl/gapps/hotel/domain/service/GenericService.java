@@ -10,7 +10,7 @@ import pl.gapps.hotel.domain.dao.GenericDAO;
 
 /**
  * @author cyprian
- * Generyczny serwis zawieraj¹cy podstawowe metody obs³ugi tabel. CRUD
+ * Generyczny serwis zawierajï¿½cy podstawowe metody obsï¿½ugi tabel. CRUD
  */
 public abstract class GenericService<E extends Serializable, D extends GenericDAO<E>> {
 
@@ -38,6 +38,11 @@ public abstract class GenericService<E extends Serializable, D extends GenericDA
 	
 	public Boolean store(E entity) {
 		dao.store(entity);
+		return true;
+	}
+	
+	public Boolean remove(Serializable id) {
+		dao.remove(id);
 		return true;
 	}
 }
