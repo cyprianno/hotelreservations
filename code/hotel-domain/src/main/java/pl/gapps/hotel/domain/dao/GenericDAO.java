@@ -13,7 +13,7 @@ import pl.gapps.hotel.domain.dao.helper.PMF;
 
 /**
  * @author cyprian
- * DAO generyczne po którym dziedzicz¹ wszystkie inne DAO; zawiera podstawowe operacje na bazie danych.
+ * DAO generyczne po ktï¿½rym dziedziczï¿½ wszystkie inne DAO; zawiera podstawowe operacje na bazie danych.
  */
 public abstract class GenericDAO <E extends Serializable> {
 	
@@ -26,7 +26,7 @@ public abstract class GenericDAO <E extends Serializable> {
 	/**
 	 * Zapisuje lub uaktualnia wpis.
 	 * @param entity
-	 * @return entity z zapisanym id (je¿eli nowe)
+	 * @return entity z zapisanym id (jeï¿½eli nowe)
 	 */
 	public E store(E entity) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -40,8 +40,8 @@ public abstract class GenericDAO <E extends Serializable> {
 	}
 	
 	/**
-	 * Pobiera listê wszystkich elementów z tabeli.
-	 * @return Lista wpisów
+	 * Pobiera listï¿½ wszystkich elementï¿½w z tabeli.
+	 * @return Lista wpisï¿½w
 	 */
 	@SuppressWarnings("unchecked")
 	public List<E> findAll() {
@@ -80,9 +80,10 @@ public abstract class GenericDAO <E extends Serializable> {
 	 * Usuwa wpis z tabeli
 	 * @param entity
 	 */
-	public void remove(E entity) {
+	public void remove(Serializable id) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
+			E entity = pm.getObjectById(getEntityClass(), id);
 			pm.deletePersistent(entity);
 		} finally {
 			pm.close();
