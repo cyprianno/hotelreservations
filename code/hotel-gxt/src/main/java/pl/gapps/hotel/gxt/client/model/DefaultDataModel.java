@@ -4,7 +4,7 @@
 package pl.gapps.hotel.gxt.client.model;
 
 /**
- * Domyœlny data model dla wszystkich typów obiektów
+ * Domyslny data model dla wszystkich typow obiektow
  * @author cyprian
  * extends BaseDataModel
  */

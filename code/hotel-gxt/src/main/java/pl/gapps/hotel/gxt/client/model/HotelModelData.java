@@ -16,7 +16,7 @@ public class HotelModelData extends BaseModelData implements Serializable, BeanM
 
 	private static final long serialVersionUID = 4015228790784747291L;
 	
-    /* metody dostêpowe */
+    /* metody dostepowe */
 	public Long getHotelId() {
 		return get("hotelId");
 	}
