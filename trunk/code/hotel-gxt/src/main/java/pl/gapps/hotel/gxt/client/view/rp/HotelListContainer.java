@@ -100,7 +100,7 @@ public class HotelListContainer extends LayoutContainer {
 		column.setDateTimeFormat(DateTimeFormat.getMediumDateFormat());
 		configs.add(column);
 
-		GridCellRenderer<ModelData> buttonRenderer = new GridCellRenderer<ModelData>() {
+		GridCellRenderer<ModelData> statusRenderer = new GridCellRenderer<ModelData>() {
 			@Override
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
@@ -119,7 +119,7 @@ public class HotelListContainer extends LayoutContainer {
 		column.setId(statusColumnName);
 		column.setWidth(95);
 		column.setHeader("status");
-		column.setRenderer(buttonRenderer);
+		column.setRenderer(statusRenderer);
 		configs.add(column);
 
 		RpcProxy<PagingLoadResult<HotelModelData>> proxy = new RpcProxy<PagingLoadResult<HotelModelData>>() {
@@ -171,6 +171,7 @@ public class HotelListContainer extends LayoutContainer {
 				}
 				hotel.set("name", "DS");
 				hotel.set("available", new DateWrapper().clearTime().asDate());
+				hotel.set(statusColumnName,RowStatusEnum.NEW);
 
 				re.stopEditing(false);
 				BeanModel model = factory.createModel(hotel);
