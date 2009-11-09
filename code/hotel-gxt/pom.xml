@@ -8,7 +8,7 @@
 	<name>hotel-gxt Webapp</name>
 	<url>http://gapps.pl</url>
 	<properties>
-		<gwt.version>1.7.0</gwt.version>
+		<gwt.version>1.7.1</gwt.version>
 		<gxt.version>2.0.1</gxt.version>
 		<junit.version>4.5</junit.version>
 		<compiler.version>1.6</compiler.version>
