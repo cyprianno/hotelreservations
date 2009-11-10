@@ -8,7 +8,7 @@ import pl.gapps.hotel.domain.model.rp.Floor;
 
 /**
  * @author cyprian
- * DAO obs³uguj¹ce tabelê Floor (piêtra)
+ * DAO obsÅ‚ugujÄ…ce tabelÄ™ Floor (piï¿½tra)
  */
 public class FloorDAO extends GenericDAO<Floor>{
 

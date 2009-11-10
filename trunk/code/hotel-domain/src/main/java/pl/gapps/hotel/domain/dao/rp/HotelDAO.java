@@ -8,7 +8,7 @@ import pl.gapps.hotel.domain.model.rp.Hotel;
 
 /**
  * @author cyprian
- * DAO obs³uguj¹ce tabelê Hotel (budynki)
+ * DAO obsÅ‚ugujÄ…ce tabelÄ™ Hotel (budynki)
  */
 public class HotelDAO extends GenericDAO<Hotel>{
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AppEngineSDKInstaller">
+	
+
+    <property name="jta.version" value="1.1"/>
+    <property name="jta.jar" value="${localRepository}/javax/transaction/jta/${jta.version}/jta-${jta.version}.jar" />
+	<property name="mvn.commandline" value="install:install-file -DgroupId=javax.transaction -DartifactId=transaction-api -Dversion=${jta.version} -Dpackaging=jar -Dfile=&quot;${jta.jar}&quot;"/>
+
+    <target name="check-installed">
+        <condition property="already.installed" >
+            <available file="${localRepository}/javax/transaction/transaction-api/${jta.version}/transaction-api-${appengine.version}.jar"/>
+        </condition>
+        <condition property="maven.suffix" value="">
+            <os family="unix"/>
+        </condition>
+        <condition property="maven.suffix" value=".bat">
+            <os family="windows"/>
+        </condition>
+    </target>
+	
+    <target name="install" depends="check-installed" unless="already.installed" >
+    	<echo message="mvn${maven.suffix} ${mvn.commandline}"/>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false" >
+            <arg line="${mvn.commandline}"/>
+        </exec>
+
+    </target>
+
+</project>

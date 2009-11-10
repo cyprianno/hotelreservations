@@ -5,7 +5,7 @@ package pl.gapps.hotel.domain.utils;
 
 /**
  * @author cyprian
- * Wyj¹tek rzucany, gdy nie s¹ spe³nione warunki wykonania metody.
+ * WyjÄ…tek rzucany, gdy nie sÄ… speÅ‚nione warunki wykonania metody.
  */
 public class ConstraintException extends Exception {
 

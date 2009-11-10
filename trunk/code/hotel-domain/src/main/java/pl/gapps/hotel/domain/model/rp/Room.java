@@ -36,7 +36,7 @@ public class Room implements Serializable {
     @Persistent
 	private Floor floor;
 
-	/* metody dostêpowe */
+	/* metody dostÄ™powe */
 	public Key getRoomId() {
 		return roomId;
 	}
