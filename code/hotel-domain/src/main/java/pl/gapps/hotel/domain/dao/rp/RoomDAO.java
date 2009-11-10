@@ -8,7 +8,7 @@ import pl.gapps.hotel.domain.model.rp.Room;
 
 /**
  * @author cyprian
- * DAO obs³uguj¹ce tabelê Room (pokoje)
+ * DAO obsÅ‚ugujÄ…ce tabelÄ™ Room (pokoje)
  */
 public class RoomDAO extends GenericDAO<Room>{
 

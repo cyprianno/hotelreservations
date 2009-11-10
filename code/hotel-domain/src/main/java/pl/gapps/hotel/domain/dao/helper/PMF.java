@@ -6,7 +6,7 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
 /**
  * @author cyprian
- * statyczne pobieranie PersistenceManagerFactory wg zaleceñ Google dla JDO
+ * statyczne pobieranie PersistenceManagerFactory wg zaleceÅ„ Google dla JDO
  */
 public final class PMF {
     private static final PersistenceManagerFactory pmfInstance =
@@ -15,7 +15,7 @@ public final class PMF {
     private PMF() {}
 
     /**
-     * Instancja fabryki Persistence Manager (nale¿y z niej póŸniej pobraæ PM)
+     * Instancja fabryki Persistence Manager (naleÅ¼y z niej pÃ³Åºniej pobraÄ‡ PM)
      * @return pmfInstance
      */
     public static PersistenceManagerFactory get() {

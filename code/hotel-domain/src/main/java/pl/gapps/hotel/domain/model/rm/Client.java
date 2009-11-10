@@ -13,7 +13,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author cyprian
- * Tabela klientów hoteli
+ * Tabela klientÃ³w hoteli
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Client implements Serializable{
@@ -36,7 +36,7 @@ public class Client implements Serializable{
 	@Persistent
 	private String legitimationNumber;
 
-    /* metody dostêpowe */
+    /* metody dostï¿½powe */
 	public Long getClientId() {
 		return clientId;
 	}

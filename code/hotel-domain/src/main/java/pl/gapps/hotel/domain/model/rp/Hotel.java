@@ -38,7 +38,7 @@ public class Hotel implements Serializable{
     @Persistent
 	private Set<Floor> floors = new HashSet<Floor>();
 
-    /* metody dostêpowe */
+    /* metody dostÄ™powe */
 	public Long getHotelId() {
 		return hotelId;
 	}
