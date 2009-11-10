@@ -8,7 +8,7 @@
 
     <target name="check-installed">
         <condition property="already.installed" >
-            <available file="${localRepository}/javax/transaction/transaction-api/${jta.version}/transaction-api-${appengine.version}.jar"/>
+            <available file="${localRepository}/javax/transaction/transaction-api/${jta.version}/transaction-api-${jta.version}.jar"/>
         </condition>
         <condition property="maven.suffix" value="">
             <os family="unix"/>
@@ -19,12 +19,9 @@
     </target>
 	
     <target name="install" depends="check-installed" unless="already.installed" >
-    	<echo message="mvn${maven.suffix} ${mvn.commandline}"/>
-
         <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false" >
             <arg line="${mvn.commandline}"/>
         </exec>
-
     </target>
 
 </project>
