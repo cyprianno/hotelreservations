@@ -145,7 +145,7 @@ public class HotelListContainer extends LayoutContainer {
 		ColumnModel cm = new ColumnModel(configs);
 
 		ContentPanel cp = new ContentPanel();
-		cp.setHeading("Edit Hotel's buildings");
+		cp.setHeading("Rejestr Pomieszczeń");
 		cp.setFrame(true);
 		cp.setHeight(300);
 		cp.setLayout(new FitLayout());
@@ -172,7 +172,7 @@ public class HotelListContainer extends LayoutContainer {
 		cp.add(grid);
 
 		ToolBar toolBar = new ToolBar();
-		Button add = new Button("Add Hotel");
+		Button add = new Button("Dodaj");
 		add.addSelectionListener(new SelectionListener<ButtonEvent>() {
 
 			@Override
@@ -199,7 +199,7 @@ public class HotelListContainer extends LayoutContainer {
 		});
 		add.setIcon(ResourceManager.ICONS.add16());
 		toolBar.add(add);
-		removeHotel = new Button("RemoveHotel",new SelectionListener<ButtonEvent>() {
+		removeHotel = new Button("Usuń",new SelectionListener<ButtonEvent>() {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
@@ -224,7 +224,7 @@ public class HotelListContainer extends LayoutContainer {
 			}
 		}));
 
-		cp.addButton(new Button("Save", new SelectionListener<ButtonEvent>() {
+		cp.addButton(new Button("Zapisz", new SelectionListener<ButtonEvent>() {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {

@@ -30,6 +30,7 @@ public class NavigationBar extends LayoutContainer {
 		Button rpModuleButton = new Button("Rejestr Pomieszczeń");
 		cp.add(rpModuleButton);
 		Button rmModuleButton = new Button("Rejestr Mieszkańców");
+		rmModuleButton.setEnabled(false);
 		cp.add(rmModuleButton);
 		this.add(cp);
 	}
