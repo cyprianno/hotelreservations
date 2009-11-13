@@ -22,6 +22,8 @@ import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Record;
@@ -58,6 +60,7 @@ public class HotelListContainer extends LayoutContainer {
 	Text deleteCountText = new Text("Do usunięcia: ");
 	Text deleteCount = new Text("0");
 	String statusColumnName = "statusColumn";
+	Button removeHotel;
 
 	public HotelListContainer() {
 	}
@@ -150,9 +153,22 @@ public class HotelListContainer extends LayoutContainer {
 		final RowEditor<HotelModelData> re = new RowEditor<HotelModelData>();
 		re.setClicksToEdit(ClicksToEdit.TWO);
 		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
+		grid.setLoadMask(true);
 		grid.setAutoExpandColumn("name");
 		grid.setBorders(true);
 		grid.addPlugin(re);
+		grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (se.getSelectedItem() == null) {
+					removeHotel.setEnabled(false);
+				} else {
+					removeHotel.setEnabled(true);
+				}
+				
+			}
+		});
 		cp.add(grid);
 
 		ToolBar toolBar = new ToolBar();
@@ -183,7 +199,7 @@ public class HotelListContainer extends LayoutContainer {
 		});
 		add.setIcon(ResourceManager.ICONS.add16());
 		toolBar.add(add);
-		Button removeHotel = new Button("RemoveHotel",new SelectionListener<ButtonEvent>() {
+		removeHotel = new Button("RemoveHotel",new SelectionListener<ButtonEvent>() {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
@@ -192,6 +208,7 @@ public class HotelListContainer extends LayoutContainer {
 				}
 			}
 		});
+		removeHotel.setEnabled(false);
 		toolBar.add(removeHotel);
 
 		deleteCount.setStyleAttribute("color", "black");
