@@ -1,0 +1,1 @@
+Java GXT project. Hotel management.
